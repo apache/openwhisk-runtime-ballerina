@@ -19,7 +19,8 @@
 
 # Apache OpenWhisk Runtime for Ballerina
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Build Status](https://travis-ci.com/mpmunasinghe/incubator-openwhisk-runtime-ballerina.svg?branch=master)](https://travis-ci.com/mpmunasinghe/openwhisk-runtime-ballerina)
+[![Build Status](https://travis-ci.com/apache/incubator-openwhisk-runtime-ballerina.svg?branch=master)]
+(https://travis-ci.com/apache/incubator-openwhisk-runtime-ballerina)
 
 This repository contains the [Ballerina](https://ballerinalang.org) runtime for the Apache OpenWhisk serverless platform.
 

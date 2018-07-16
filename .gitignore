@@ -1,0 +1,13 @@
+.vscode
+.idea
+.iml
+.balx
+.ballerina
+
+ballerina-action/Ballerina.toml
+ballerina-action/ballerina-action.iml
+ballerina-internal.log
+
+.gradle/
+ballerina/proxy/build/
+tests/build

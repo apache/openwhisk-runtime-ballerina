@@ -20,7 +20,7 @@ include 'ballerina'
 include 'ballerina:proxy'
 
 
-rootProject.name = 'openwhisk-runtime-ballerina'
+rootProject.name = 'incubator-openwhisk-runtime-ballerina'
 
 gradle.ext.openwhisk = [
         version: '1.0.0-SNAPSHOT'

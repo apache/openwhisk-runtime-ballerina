@@ -69,7 +69,7 @@ Use the OpenWhisk [`wsk` CLI](https://github.com/apache/incubator-openwhisk/blob
 to create your Ballerina action.
 
 ```bash
-wsk action create hello hello.balx --docker mpmunasinghe/balaction
+wsk action create hello hello.balx --docker openwhisk/balaction
 ```
 
 Now you're ready to invoke the action:

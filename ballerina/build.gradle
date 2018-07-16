@@ -16,5 +16,4 @@
  */
 
 ext.dockerImageName = 'balaction'
-ext.dockerImagePrefix = "mpmunasinghe"
 apply from: '../gradle/docker.gradle'

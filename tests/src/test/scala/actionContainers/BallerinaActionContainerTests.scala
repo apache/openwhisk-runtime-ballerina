@@ -34,7 +34,7 @@ import spray.json._
 @RunWith(classOf[JUnitRunner])
 class BallerinaActionContainerTests extends BasicActionRunnerTests with WskActorSystem {
 
-  lazy val ballerinaContainerImageName = "mpmunasinghe/balaction"
+  lazy val ballerinaContainerImageName = "balaction"
 
   override def withActionContainer(env: Map[String, String] = Map.empty)(code: ActionContainer => Unit) = {
     withContainer(ballerinaContainerImageName, env)(code)

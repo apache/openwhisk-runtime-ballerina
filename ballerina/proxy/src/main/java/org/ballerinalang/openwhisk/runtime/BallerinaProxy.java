@@ -210,7 +210,7 @@ import javax.ws.rs.core.Response;
      *
      * @param status
      * @param response
-     * @return
+     * @return Formatted response
      */
     private Response buildResponse(Response.Status status, String response) {
         System.out.println("XXX_THE_END_OF_A_WHISK_ACTIVATION_XXX");

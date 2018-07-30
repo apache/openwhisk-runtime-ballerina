@@ -29,7 +29,7 @@ deploy:
     on:
       tags: true
       all_branches: true
-      repo: apache/incubator-openwhisk-runtime-java
+      repo: apache/incubator-openwhisk-runtime-ballerina
   - provider: script
     script: "./tools/travis/publish.sh openwhisk latest"
     on:

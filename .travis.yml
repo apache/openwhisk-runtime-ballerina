@@ -8,32 +8,30 @@ scala:
 - 2.11.11
 services:
 - docker
-
 notifications:
   email: false
   webhooks:
     urls:
       # travis2slack webhook to enable DMs on openwhisk-team.slack.com to PR authors with TravisCI results
-      secure: "jzynedhJsLjEShDWyPmlpzl9Ba704kvjSuLKXu/PEXh9ZKTNtG1NYjjAHZCFzMpRxaLpnUnboUNlh9up577rgQcSsczPu7TP0nabRfLupLWt+8Wbd4+53B3NDHWJfep9LKSL5FmgegMd6pLK/JUMDctW/ba1+eiLEAQZG+jm4i5XntAbvO2YBoqtmiRK5z8W+/hlmX3TuoP9KCgLHMwu9u9QQ/7boXYNU0dAHzAB+m77l4AM5LtQh+FnA+Vl9M48PNZMXltrrSqaH5pqs7GB0/LmiSKUhG4RSFObmCo8nwlGSrQVHOiWqYV7q6q33ivflZnPGUewqhwHiaTM8VVrtAa28IQX205mkKUa3aryxVOKw2VqDqE8R29aEKNxEB/Vd6YtjhwfzVR2g7nJUehTHkiMTlls1uqgdE0Y39MVpJ4fV7joglEgPlMz4DmePhLFZSIfhwuo63t66e0dG8u7i/tb2RT7DqweQXArTdu7DTXPiy6JWTfHGCjr0VPjxwoiIsGp5FIqZU4QI4hVp/YqieLnF2uA0ue3d3OpBAoNQRBf6t6S7TT4XvLrctew5k/nWfqrMFyj6/bVnjB9r0KxmEGuYWByV6x6FZGjfp+6nnHEmyxZO1SEY9PJcn43GOTQsNgDWvBaAlM0OXX24ppMgZQZlBG0G1dWH/79nspu9Z4="
-
+      secure: jzynedhJsLjEShDWyPmlpzl9Ba704kvjSuLKXu/PEXh9ZKTNtG1NYjjAHZCFzMpRxaLpnUnboUNlh9up577rgQcSsczPu7TP0nabRfLupLWt+8Wbd4+53B3NDHWJfep9LKSL5FmgegMd6pLK/JUMDctW/ba1+eiLEAQZG+jm4i5XntAbvO2YBoqtmiRK5z8W+/hlmX3TuoP9KCgLHMwu9u9QQ/7boXYNU0dAHzAB+m77l4AM5LtQh+FnA+Vl9M48PNZMXltrrSqaH5pqs7GB0/LmiSKUhG4RSFObmCo8nwlGSrQVHOiWqYV7q6q33ivflZnPGUewqhwHiaTM8VVrtAa28IQX205mkKUa3aryxVOKw2VqDqE8R29aEKNxEB/Vd6YtjhwfzVR2g7nJUehTHkiMTlls1uqgdE0Y39MVpJ4fV7joglEgPlMz4DmePhLFZSIfhwuo63t66e0dG8u7i/tb2RT7DqweQXArTdu7DTXPiy6JWTfHGCjr0VPjxwoiIsGp5FIqZU4QI4hVp/YqieLnF2uA0ue3d3OpBAoNQRBf6t6S7TT4XvLrctew5k/nWfqrMFyj6/bVnjB9r0KxmEGuYWByV6x6FZGjfp+6nnHEmyxZO1SEY9PJcn43GOTQsNgDWvBaAlM0OXX24ppMgZQZlBG0G1dWH/79nspu9Z4=
 before_install:
 - "./tools/travis/setup.sh"
 install: true
 script:
 - "./tools/travis/build.sh && ./tools/travis/test.sh"
 deploy:
-  - provider: script
-    script: "./tools/travis/publish.sh openwhisk ${TRAVIS_TAG##*@}"
-    on:
-      tags: true
-      all_branches: true
-      repo: apache/incubator-openwhisk-runtime-ballerina
-  - provider: script
-    script: "./tools/travis/publish.sh openwhisk latest"
-    on:
-      branch: master
-      repo: apache/incubator-openwhisk-runtime-ballerina
+- provider: script
+  script: "./tools/travis/publish.sh openwhisk ${TRAVIS_TAG##*@}"
+  on:
+    tags: true
+    all_branches: true
+    repo: apache/incubator-openwhisk-runtime-ballerina
+- provider: script
+  script: "./tools/travis/publish.sh openwhisk latest"
+  on:
+    branch: master
+    repo: apache/incubator-openwhisk-runtime-ballerina
 env:
   global:
-  - secure: D4kU9O6bs63Myb4jaEgw1O2Kuy6aTAUKEX1qZ0eYMDouLnPOPnZaFWmpISKTrJyz7hJH7yY8Cj7xl5qwsLB6JZZMtqT6yj5J/jkUJjyLKdQH81PrYy22rH99xS2t5A1dsC0A/Bf39R/qNc5tx1wCMVDF4O2rFsUtn+8vE+rn0nXsiPeWhhZagk/Hrq8YbwzDJHOGHfWe1nZIcU8MORzTriX7J2VAF0AcirPandMxff4FgzNLk432DN2GvgZIlNtZGT1DWLtJV/Sp3unD9abXr5xqNDIW+fHrMq8j/JdHC6+PFtZRFrl0Vr6X8c61PkB/ELGF2MyzNgBTnEaJixl1pianr91WK4y0oLUwpSJCz4yoQGVimAAtqMgNXjEyFMcpLClzS5TjMXKaUfi9mBn9GMCwLi3VAuVtMtH2IRW03PxIPyxkbj1j8Nrd0jh408MuMpuzyECgb+E5ffbd+0YD5XUNlTkYLFi4sEh2xpzvjGrNbrTe99zFrHt3e+dbmoahmaCyDRsxD2CDI8b++HyN78z/jO9A7kFc2TAZbWa6Xygkj1nEpnR1y4TB6eqdDo7Y6W20dLjeSSF8rACw3bM3lJh+K4/nv4Nlo6pfblhvs7T53ftst+tHpxJoQy/gDC0TcuyBThrHTeI1j7k4HkQyN+NqezBdFN2ElufjQ74ds2c=
-  - secure: KzgDAV8O0ya6JBqSs4J4A7A+2n9Mgs5kRzhwwPdUg7ExuG2xXwWw1gafNPZwagfVOQfdqLzfF4tY8PPbTfloqEomFmYI/9PUHU8nMiMQkhEKkU3Od6HqqV9/WCf9vBrmqZHTPQNRVUvsbcOiYG1xtQr4JPHySJnk9VbgumRCT+f0xWK5mGK3CQqIo43F0TScjMONED/h7yueT+zFIJIfTiOXgtckbZdi7hErrVubbkduyzGSMek1Pfzy+m7Ek6jIaS4iD6duSRfxO9GVDTMee13cD3HuIWWfkZMkNiMlXBLmOPhb67lt/dgryxZ9zKxCzJFDW3Fx8uohoFu+sg8ZcyCeeDqMUfeML8rKAdNk72e2W9Vzedx6lxoTIhLYA3KLj7kL5wTxEq9QnSI/dMPqJUG/IA7Cr5fnJWRAlJ3IroQqBH8vNZ9zuoh/Ap4G2kXL1m4JECPhBlsX8i9RgDrFrab4My2IOHBw+ZA+cJ4h5njQUkuhMtlAhJ26jwQgYhn/sSMLgb4h5IX2iiRprsrg912vFg0ZrgHu1joIH/1XEGdArkQ7O9za4mowEmOuATux0drXTRKGe6z+/xaW35K8tQ52ToJRMN+GZBKlZoNIZd/rQ/y1Ikb6PD5Gfjk0WBnxYT5jV+ted7zCq3LskpWyvXtVTKoOqPOC/cDcY5JBPK8=
+  - secure: 7RwSWCgIz4jP8vY9LeJRD+pLNUBuksxeJMFiq40ycB20ndBHvpOBj8tdZ9CG3lXFnC7pGZUJCSrPJ9rv6k0H5xp0tvjD4ikG7juOrqPncrOtsDt51ZFA3RB/4YWtPanDxKEeWaFKwc9Way/Ty8JHbwx/utBe+ZRcBzYNaDjE7uzqP0dVDnoJJGtQkj2yZwV7oizxNJd7Ys52UFpDibiLUHdb8wWlBxyhbjp9W+lv3I9s2MKzby6RM1huI8caDIbR30GG4wOtqd06ItltPmG0sQcfCCSOEaA10ofSC1OxKV5dbzSRVITe2e+CctsUYXCNLZ4F/2a6Bybpc32znrEXMuaw+OfOLXJth/P2aHnOJ59rf4ZQUqgqMJcGmuT2SA6kINn/ddpXGelwC6DC89KBBjQNa3wdrdjlWLOr5tR475DzOWbOqLtWtbFdf0NVJdE2Lqya7+C+eA1AAAjgrAzjOIapA6RIS8X/kNJMFTZ24tHVMd8fiv5SCEGPdX1aCvbberQclruQKqvtAuNu+gwyivcQ1J6NAyv5Y4mLGrFuh47hDN/2aX+C459sdgrvxi/d75PSsBSml2v4S6fTonVv+BvABp5tXdKmixMCY2edU2JmsxQkttul9+akmoQm9UCH+reoGfkXk838V/Vy56J5PsUrwmfp/x6fWJJpF7rnQ5I=
+  - secure: VCFPYbB/ab4z9pg3cjBNJH3R5twPgblGPvchNixW8Wv+uL6K4WivKY1rYnGpVtVq5zIJ6kO0pZrRg87i/LYx6ZvRYaipcuepcMY9YyNBuQ211zwrDnWzSWJFYUKO/8D/68PHND6Z9Z6R4z3+G7qvFgklRF7sdGdopTAiuv4Zl5bhuH0hUQS+PAU98hVw+fs5PaBVKXTJ3UnzWwUI+bFgYSHPj1MJQ9xWYT6UiyVfrFee3nPcQdlUuuMtZudMarDRO5Hi8X9xbwrscVXD3y3wgtGrnq/a2JEiaNr1wjXNQ8V55rprzrpDo0mCsmwrqghwIODPOi4t86UrggLJkslq1kyFlrtvLjCyH6dDwmN6zGSevSIsz4Ib3Ni6HR7EjeZ5Rila3ldbxpXc8FxE6Zsr65x3d+uHB9fuaYgUAXNrWKj5ih7jNBYUy3KDqITzYrdCiuIXWWQ+et3e2xYz9a0yrYmAnVbQjpnA+hkTZNuDBho/ZqEIjKXIm1GFIG53n4T7vBFc1CttCZ60eu1Wx5FvuBl2goxlGnlju8/lp+xZgO83YtFC5PeyGWzVqt0qX0O913IzgwxfBKpca9fNGlu7Bx5dMEDSZob/uFUBgtu1mXu7dSpgHPrrmazUMKxyAbYozCseMObMYEe7cRubddC2eVs4qS+nt+vOtxvI8N6C8C0=

@@ -5,6 +5,5 @@ function main(string... args) {
 }
 
 function example(json jsonInput) returns json {
-    json result = {"string":"hello"};
-    return result;
+    return jsonInput;
 }

@@ -5,7 +5,6 @@ function main(string... args) {
 }
 
 function run(json jsonInput) returns json {
-   io:println(jsonInput);
-   json output = { "response": "hello-world"};
+   json output = { "response": "hello-world" };
    return output;
 }

@@ -1,10 +1,10 @@
 .vscode
 .idea
-.iml
-.balx
-.ballerina
+*.iml
+*.balx
 *~
 
+.ballerina
 ballerina-internal.log
 
 .gradle/

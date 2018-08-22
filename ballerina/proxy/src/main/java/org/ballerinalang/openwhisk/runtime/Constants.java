@@ -34,14 +34,14 @@ class Constants {
     static final String RESPONSE_ERROR = "\"error\"";
     static final String RESPONSE_SUCCESS = "\"success\"";
 
-    static final String INIT_SUCCESS = "\"Function init success\"";
+    static final String INIT_SUCCESS = "\"Function initialized successfully.\"";
 
     static final String INIT_ONCE_ERROR = "\"Cannot initialize the action more than once.\"";
     static final String FAILED_TO_LOCATE_BINARY =
             "\"The action failed to generate or locate a binary. See logs for details.\"";
     static final String MISSING_MAIN_ERROR = "\"Missing main/no code to " + "execute.\"";
-    static final String FUNCTION_NOT_INITIALIZED = "\"Function not initialized\"";
-    static final String INVALID_INPUT_PARAMS = "\"Invalid input parameters for action run\"";
-    static final String FUNCTION_RUN_FAILURE = "\"Running Function failed\"";
+    static final String FUNCTION_NOT_INITIALIZED = "\"Function not initialized.\"";
+    static final String INVALID_INPUT_PARAMS = "\"Invalid input parameters for action run.\"";
+    static final String FUNCTION_RUN_FAILURE = "\"Function failed while running.\"";
     static final String DICTIONARY_RETURN_FAILURE = "\"The action did not return a dictionary.\"";
 }

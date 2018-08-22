@@ -92,11 +92,21 @@ import javax.ws.rs.core.Response;
 
                 java.nio.file.Path destinationPath = BalxLoader.saveBase64EncodedFile(balxIs);
 
-                programFile = BLangProgramLoader.read(destinationPath);
-
-                return buildResponse(Response.Status.OK, Constants.RESPONSE_SUCCESS, Constants.INIT_SUCCESS);
+                try {
+                    programFile = BLangProgramLoader.read(destinationPath);
+                    // initProgramFile initialized the Global Memory area for the function
+                    // and doing this once in the init handler permits reuse of global variables
+                    // across invocations; to disable this, the initProgramFile call should be moved
+                    // to the run handler instead.
+                    programFile = BalxLoader.initProgramFile(programFile);
+                    return buildResponse(Response.Status.OK, Constants.RESPONSE_SUCCESS, Constants.INIT_SUCCESS);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return buildRunResponse(Response.Status.BAD_REQUEST, Constants.RESPONSE_ERROR,
+                            Constants.FUNCTION_NOT_INITIALIZED);
+                }
             } else {
-                return buildResponse(Response.Status.INTERNAL_SERVER_ERROR, Constants.RESPONSE_ERROR,
+                return buildResponse(Response.Status.BAD_REQUEST, Constants.RESPONSE_ERROR,
                                      Constants.FAILED_TO_LOCATE_BINARY);
             }
         } catch (ProgramFileFormatException | BLangRuntimeException e) {
@@ -142,10 +152,10 @@ import javax.ws.rs.core.Response;
 
         //Invoking the program file
         try {
-            programFile = BalxLoader.initProgramFile(programFile);
             result = BLangFunctions
                     .invokeEntrypointCallable(programFile, programFile.getEntryPkgName(), mainFunction, parameters);
         } catch (Exception e) {
+            e.printStackTrace();
             return buildRunResponse(Response.Status.BAD_REQUEST, Constants.RESPONSE_ERROR,
                                     Constants.FUNCTION_RUN_FAILURE);
         }

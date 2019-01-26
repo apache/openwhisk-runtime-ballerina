@@ -37,7 +37,7 @@ gradle.ext.scalafmt = [
 ]
 
 gradle.ext.ballerina = [
-        version: '0.975.0'
+        version: '0.990.2'
 ]
 
 gradle.ext.msf4j = [

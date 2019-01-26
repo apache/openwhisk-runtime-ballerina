@@ -27,7 +27,7 @@ This repository contains the [Ballerina](https://ballerinalang.org) runtime for 
 
 The following prerequisites are needed to try this out:
 
-- [Ballerina](https://ballerina.io/downloads/) >= 0.975.0
+- [Ballerina](https://ballerina.io/downloads/) >= 0.990.2
 
 ### Creating a Ballerina function
 
@@ -35,33 +35,24 @@ Create a file `hello.bal` for your Ballerina function with the following code:
 
 ```ballerina
 import ballerina/io;
-function main(string... args) {
-  io:println("started");
-}
-function run(json jsonInput) returns json {
+
+public function main(json jsonInput) returns json {
   io:println(jsonInput);
   json output = { "response": "hello-world"};
   return output;
 }
 ```
 
-The Ballerina file should include:
- - `main(string... args)` and
- - `run(json jsonInput)`.
-
-The first is necessary to compile the function but does not execute when you
-invoke the action.
+The Ballerina file must include a function called `main`. The abscence of `main` causes the Ballerina compiler to omit generation of the executable. You may have more than one entry point in your source file however (e.g., a `main` and a `run`) and use the standard OpenWhisk mechanism to specify other functions to run on entry (e.g., `--main <other function name>` when using the `wsk action create` CLI command). The function must accept a JSON object and return a JSON object to be compliant with the OpenWhisk action interface.
 
 ### Compiling your function
 
-Run the [Ballerina](https://ballerina.io/downloads) compiler to
-build your function.
+Run the [Ballerina](https://ballerina.io/downloads) compiler to build your function.
 ```bash
 ballerina build hello.bal
 ```
 
-This generates an executable `hello.balx`. You will use this binary to create
-the OpenWhisk action.
+This generates an executable `hello.balx`. You will use this binary to create the OpenWhisk action.
 
 ### Creating and invoking your Ballerina action
 
@@ -69,7 +60,7 @@ Use the OpenWhisk [`wsk` CLI](https://github.com/apache/incubator-openwhisk/blob
 to create your Ballerina action.
 
 ```bash
-wsk action create hello hello.balx --docker openwhisk/action-ballerina-v0.975
+wsk action create hello hello.balx --docker openwhisk/action-ballerina-v0.990.2
 ```
 
 Now you're ready to invoke the action:

@@ -26,7 +26,7 @@ class Constants {
     static final String CODE = "code";
     static final String IDENTITY = "identity";
 
-    static final String FUNCTION_CALLABLE_NAME = "run";
+    static final String FUNCTION_CALLABLE_NAME = "main";
     static final String FUNCTION_MAIN = "main";
     static final String FUNCTION_FILE_NAME = "function";
     static final String FUNCTION_EXTENSION = ".balx";

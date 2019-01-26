@@ -20,31 +20,29 @@ package org.ballerinalang.openwhisk.runtime;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.ballerinalang.BLangProgramLoader;
+import org.ballerinalang.bre.bvm.BVMExecutor;
 import org.ballerinalang.logging.BLogManager;
-import org.ballerinalang.model.values.BJSON;
+import org.ballerinalang.model.util.JsonParser;
 import org.ballerinalang.model.values.BValue;
+import org.ballerinalang.util.codegen.FunctionInfo;
+import org.ballerinalang.util.codegen.PackageInfo;
 import org.ballerinalang.util.codegen.ProgramFile;
 import org.ballerinalang.util.exceptions.BLangRuntimeException;
 import org.ballerinalang.util.exceptions.ProgramFileFormatException;
-import org.ballerinalang.util.program.BLangFunctions;
 import org.wso2.msf4j.Request;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.logging.LogManager;
-import java.util.Set;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.logging.LogManager;
 
 /**
  * OpenWhisk Ballerina Runtime Proxy Service
@@ -137,30 +135,40 @@ import javax.ws.rs.core.Response;
 
         requestElements = BalxLoader.requestToJson(request);
 
+        // Prepare input parameters
+        BValue[] parameters = new BValue[1];
+
         if (requestElements.size() == 0 || requestElements.getAsJsonObject(Constants.JSON_VALUE) == null) {
-            return buildRunResponse(Response.Status.BAD_REQUEST, Constants.RESPONSE_ERROR,
-                                    Constants.INVALID_INPUT_PARAMS);
+            // if the incoming request contains no values, we can either report a conformance error
+            // or substitute an empty {}; all the other runtimes do the latter so matching the behavior here.
+            // alternative:
+            //
+            // return buildRunResponse(Response.Status.BAD_REQUEST, Constants.RESPONSE_ERROR, Constants.INVALID_INPUT_PARAMS);
+            parameters[0] = JsonParser.parse("{}");
+        } else {
+            BValue bJson = JsonParser.parse(requestElements.getAsJsonObject(Constants.JSON_VALUE).toString());
+            parameters[0] = bJson;
         }
 
-        //Preparing input parameters
-        BValue bJson = new BJSON(requestElements.getAsJsonObject(Constants.JSON_VALUE).toString());
-        BValue[] parameters = new BValue[1];
-        parameters[0] = bJson;
-
-        //Setting up runtime environment variables
+        // Setup runtime environment variables
         augmentEnv(requestElements);
 
-        //Invoking the program file
+        // Invoke the program file
         try {
-            result = BLangFunctions
-                    .invokeEntrypointCallable(programFile, programFile.getEntryPkgName(), mainFunction, parameters);
+            PackageInfo packageInfo = programFile.getPackageInfo(programFile.getEntryPkgName());
+            FunctionInfo functionInfo = packageInfo.getFunctionInfo(mainFunction);
+            if (functionInfo == null) {
+                throw new RuntimeException("Function '" + mainFunction + "' is not defined");
+            }
+
+            result = BVMExecutor.executeEntryFunction(programFile, functionInfo, parameters);
         } catch (Exception e) {
             e.printStackTrace();
             return buildRunResponse(Response.Status.BAD_REQUEST, Constants.RESPONSE_ERROR,
                                     Constants.FUNCTION_RUN_FAILURE);
         }
 
-        //Preparing function response
+        // Prepare function response
         StringBuilder response = new StringBuilder();
         for (BValue bValue : result) {
             if ("json".equals(bValue.getType().toString())) {

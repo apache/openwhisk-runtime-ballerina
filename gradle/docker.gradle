@@ -43,7 +43,7 @@ ext {
     dockerImageTag = project.hasProperty('dockerImageTag') ? dockerImageTag : 'latest'
     dockerImagePrefix = project.hasProperty('dockerImagePrefix') ? dockerImagePrefix : 'whisk'
     dockerTimeout = project.hasProperty('dockerTimeout') ? dockerTimeout.toInteger() : 840
-    dockerRetries = project.hasProperty('dockerRetries') ? dockerRetries.toInteger() : 3
+    dockerRetries = project.hasProperty('dockerRetries') ? dockerRetries.toInteger() : 0
     dockerBinary = project.hasProperty('dockerBinary') ? [dockerBinary] : ['docker']
     dockerBuildArg = ['build']
 }

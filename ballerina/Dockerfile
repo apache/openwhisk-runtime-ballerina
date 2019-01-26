@@ -32,10 +32,13 @@ ENV LANG="en_US.UTF-8" \
 ADD proxy /home/ballerina
 
 RUN cd /home/ballerina \
-    && rm -rf .classpath .gitignore .gradle .project .settings Dockerfile build \
     && ./gradlew shadowJar \
     && rm -rf /home/ballerina/src
 
 EXPOSE 8080
 
+## Use this command to run using jarfile
 CMD java -Dballerina.home=/home/ballerina/build -Djava.util.logging.manager=org.ballerinalang.logging.BLogManager -jar /home/ballerina/build/libs/ballerina-all.jar --http.port=8080
+
+## Use this command to debug remotely
+#CMD java -Dballerina.home=/home/ballerina/build -Djava.util.logging.manager=org.ballerinalang.logging.BLogManager -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005 -jar /home/ballerina/build/libs/ballerina-all.jar --http.port=8080

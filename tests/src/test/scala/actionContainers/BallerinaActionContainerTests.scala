@@ -17,6 +17,8 @@
 
 package actionContainers
 
+import java.lang.Exception
+
 import actionContainers.ActionContainer.withContainer
 import common.WskActorSystem
 import java.nio.file.{Files, Paths}
@@ -34,7 +36,7 @@ import spray.json._
 @RunWith(classOf[JUnitRunner])
 class BallerinaActionContainerTests extends BasicActionRunnerTests with WskActorSystem {
 
-  lazy val ballerinaContainerImageName = "action-ballerina-v0.975"
+  lazy val ballerinaContainerImageName = "action-ballerina-v0.990.2"
 
   override def withActionContainer(env: Map[String, String] = Map.empty)(code: ActionContainer => Unit) = {
     withContainer(ballerinaContainerImageName, env)(code)
@@ -49,8 +51,7 @@ class BallerinaActionContainerTests extends BasicActionRunnerTests with WskActor
   }
 
   override val testNotReturningJson = {
-    // skip this test to fix the nuller
-    TestConfig("", skipTest = true)
+    TestConfig(buildBal("notjson"), enforceEmptyOutputStream = false)
   }
 
   override val testEnv = {
@@ -58,7 +59,8 @@ class BallerinaActionContainerTests extends BasicActionRunnerTests with WskActor
   }
 
   override val testEcho = {
-    TestConfig(buildBal("echo"), skipTest = true)
+    // see https://github.com/ballerina-platform/ballerina-lang/issues/8952 no way to print to stderr
+    TestConfig(buildBal("echo"), skipTest = true) // note that skip test here only skips the stderr check
   }
 
   override val testUnicode = {
@@ -66,7 +68,7 @@ class BallerinaActionContainerTests extends BasicActionRunnerTests with WskActor
   }
 
   override val testEntryPointOtherThanMain = {
-    TestConfig(buildBal("norun"), "example", enforceEmptyOutputStream = false)
+    TestConfig(buildBal("niam"), "niam", enforceEmptyOutputStream = false)
   }
 
   override val testLargeInput = {
@@ -86,7 +88,7 @@ class BallerinaActionContainerTests extends BasicActionRunnerTests with WskActor
     }
   }
 
-  it should "Initialize with function returning the response and invoke" in {
+  it should "Initialize with function returning the response and invoke it" in {
     val (out, err) = withActionContainer() { c =>
       val sourceFile = buildBal("return-response")
       sourceFile should not be "Build Error"
@@ -99,7 +101,7 @@ class BallerinaActionContainerTests extends BasicActionRunnerTests with WskActor
     }
   }
 
-  it should "should fail for Ballerina code with no run function" in {
+  it should "should fail for Ballerina code with incompatible main" in {
     val (out, err) = withActionContainer() { c =>
       val sourceFile = buildBal("fail")
       sourceFile should not be "Build Error"
@@ -108,7 +110,7 @@ class BallerinaActionContainerTests extends BasicActionRunnerTests with WskActor
       initCode should be(200)
 
       val (runCode, _) = c.run(runPayload(JsObject("response" -> JsString("hello-world"))))
-      runCode should be(400)
+      runCode should not be (200)
     }
   }
 
@@ -142,6 +144,7 @@ class BallerinaActionContainerTests extends BasicActionRunnerTests with WskActor
     }
 
     val path = getClass.getResource("/".concat(functionName)).getPath
+    val balxPath = Paths.get(path, functionName.concat(".balx"))
     val context = new CompilerContext
     val options = CompilerOptions.getInstance(context)
 
@@ -149,15 +152,21 @@ class BallerinaActionContainerTests extends BasicActionRunnerTests with WskActor
     options.put(COMPILER_PHASE, CompilerPhase.CODE_GEN.toString)
     options.put(OFFLINE, "true")
 
+    Files.deleteIfExists(balxPath)
     val compiler = Compiler.getInstance(context)
-    compiler.build()
+    try {
+      val compiledPackage = compiler.build()
+      compiledPackage should have size 1
+      compiledPackage.forEach(pkg => compiler.write(pkg, balxPath.toString))
+    } catch {
+      case e: Exception => return "Build Error"
+    }
 
     val diagnosticLog = BLangDiagnosticLog.getInstance(context)
     if (diagnosticLog.errorCount > 0) {
       return "Build Error"
     }
 
-    val balxPath = Paths.get(path, functionName.concat(".balx"))
     val encoded = Base64.getEncoder.encode(Files.readAllBytes(balxPath))
     new String(encoded, "UTF-8")
   }

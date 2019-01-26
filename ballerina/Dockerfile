@@ -30,10 +30,9 @@ ENV LANG="en_US.UTF-8" \
 	BUILD=12
 
 ADD proxy /home/ballerina
-
 RUN cd /home/ballerina \
     && ./gradlew shadowJar \
-    && rm -rf /home/ballerina/src
+    && rm -rf /home/ballerina/.gradle /home/ballerina/src /home/ballerina/gradle* /home/ballerina/build.gradle /root/.gradle
 
 EXPOSE 8080
 

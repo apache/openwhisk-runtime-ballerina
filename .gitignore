@@ -12,3 +12,8 @@ ballerina/proxy/build/
 ballerina/proxy/out/
 tests/build
 tests/out/
+
+.classpath
+.settings
+.project
+bin/

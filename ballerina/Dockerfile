@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-FROM adoptopenjdk/openjdk8-openj9:jdk8u162-b12_openj9-0.8.0
+FROM adoptopenjdk/openjdk8-openj9:jdk8u202-b08_openj9-0.12.1
 
 RUN rm -rf /var/lib/apt/lists/* && apt-get clean && apt-get update \
 	&& apt-get install -y --no-install-recommends locales \
@@ -26,8 +26,8 @@ ENV LANG="en_US.UTF-8" \
 	LANGUAGE="en_US:en" \
 	LC_ALL="en_US.UTF-8" \
 	VERSION=8 \
-	UPDATE=162 \
-	BUILD=12
+	UPDATE=202 \
+	BUILD=08
 
 ADD proxy /home/ballerina
 RUN cd /home/ballerina \

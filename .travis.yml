@@ -27,7 +27,7 @@ deploy:
     all_branches: true
     repo: apache/incubator-openwhisk-runtime-ballerina
 - provider: script
-  script: "./tools/travis/publish.sh openwhisk latest"
+  script: "./tools/travis/publish.sh openwhisk nightly"
   on:
     branch: master
     repo: apache/incubator-openwhisk-runtime-ballerina

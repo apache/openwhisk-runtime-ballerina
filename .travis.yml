@@ -39,12 +39,12 @@ deploy:
   on:
     tags: true
     all_branches: true
-    repo: apache/incubator-openwhisk-runtime-ballerina
+    repo: apache/openwhisk-runtime-ballerina
 - provider: script
   script: "./tools/travis/publish.sh openwhisk nightly"
   on:
     branch: master
-    repo: apache/incubator-openwhisk-runtime-ballerina
+    repo: apache/openwhisk-runtime-ballerina
 env:
   global:
   - secure: 7RwSWCgIz4jP8vY9LeJRD+pLNUBuksxeJMFiq40ycB20ndBHvpOBj8tdZ9CG3lXFnC7pGZUJCSrPJ9rv6k0H5xp0tvjD4ikG7juOrqPncrOtsDt51ZFA3RB/4YWtPanDxKEeWaFKwc9Way/Ty8JHbwx/utBe+ZRcBzYNaDjE7uzqP0dVDnoJJGtQkj2yZwV7oizxNJd7Ys52UFpDibiLUHdb8wWlBxyhbjp9W+lv3I9s2MKzby6RM1huI8caDIbR30GG4wOtqd06ItltPmG0sQcfCCSOEaA10ofSC1OxKV5dbzSRVITe2e+CctsUYXCNLZ4F/2a6Bybpc32znrEXMuaw+OfOLXJth/P2aHnOJ59rf4ZQUqgqMJcGmuT2SA6kINn/ddpXGelwC6DC89KBBjQNa3wdrdjlWLOr5tR475DzOWbOqLtWtbFdf0NVJdE2Lqya7+C+eA1AAAjgrAzjOIapA6RIS8X/kNJMFTZ24tHVMd8fiv5SCEGPdX1aCvbberQclruQKqvtAuNu+gwyivcQ1J6NAyv5Y4mLGrFuh47hDN/2aX+C459sdgrvxi/d75PSsBSml2v4S6fTonVv+BvABp5tXdKmixMCY2edU2JmsxQkttul9+akmoQm9UCH+reoGfkXk838V/Vy56J5PsUrwmfp/x6fWJJpF7rnQ5I=

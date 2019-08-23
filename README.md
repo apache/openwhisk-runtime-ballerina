@@ -19,7 +19,7 @@
 
 # Apache OpenWhisk Runtime for Ballerina
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Build Status](https://travis-ci.org/apache/incubator-openwhisk-runtime-ballerina.svg?branch=master)](https://travis-ci.org/apache/incubator-openwhisk-runtime-ballerina)
+[![Build Status](https://travis-ci.org/apache/openwhisk-runtime-ballerina.svg?branch=master)](https://travis-ci.org/apache/openwhisk-runtime-ballerina)
 
 This repository contains the [Ballerina](https://ballerinalang.org) runtime for the Apache OpenWhisk serverless platform.
 
@@ -56,7 +56,7 @@ This generates an executable `hello.balx`. You will use this binary to create th
 
 ### Creating and invoking your Ballerina action
 
-Use the OpenWhisk [`wsk` CLI](https://github.com/apache/incubator-openwhisk/blob/master/docs/cli.md)
+Use the OpenWhisk [`wsk` CLI](https://github.com/apache/openwhisk/blob/master/docs/cli.md)
 to create your Ballerina action.
 
 ```bash
@@ -74,7 +74,7 @@ wsk action invoke hello --result
 }
 ```
 
-You can learn more about working with OpenWhisk Actions [here](https://github.com/apache/incubator-openwhisk/blob/master/docs/actions.md).
+You can learn more about working with OpenWhisk Actions [here](https://github.com/apache/openwhisk/blob/master/docs/actions.md).
 
 ### Developing the Ballerina runtime for OpenWhisk
 

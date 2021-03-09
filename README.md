@@ -43,7 +43,7 @@ public function main(json jsonInput) returns json {
 }
 ```
 
-The Ballerina file must include a function called `main`. The abscence of `main` causes the Ballerina compiler to omit generation of the executable. You may have more than one entry point in your source file however (e.g., a `main` and a `run`) and use the standard OpenWhisk mechanism to specify other functions to run on entry (e.g., `--main <other function name>` when using the `wsk action create` CLI command). The function must accept a JSON object and return a JSON object to be compliant with the OpenWhisk action interface.
+The Ballerina file must include a function called `main`. The absence of `main` causes the Ballerina compiler to omit generation of the executable. You may have more than one entry point in your source file however (e.g., a `main` and a `run`) and use the standard OpenWhisk mechanism to specify other functions to run on entry (e.g., `--main <other function name>` when using the `wsk action create` CLI command). The function must accept a JSON object and return a JSON object to be compliant with the OpenWhisk action interface.
 
 ### Compiling your function
 
